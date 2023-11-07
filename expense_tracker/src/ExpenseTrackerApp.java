@@ -4,6 +4,11 @@ import model.ExpenseTrackerModel;
 import view.ExpenseTrackerView;
 import model.Filter.AmountFilter;
 import model.Filter.CategoryFilter;
+import javax.swing.*;
+
+import java.util.List;
+
+import model.Transaction;
 
 public class ExpenseTrackerApp {
 
@@ -67,6 +72,40 @@ public class ExpenseTrackerApp {
     JOptionPane.showMessageDialog(view,exception.getMessage());
     view.toFront();
    }});
+
+
+
+
+
+
+
+    // Add action listener to the "Undo Transaction" button
+    view.addUndoTransactionListener(e -> {
+      try{
+        JTable transactionsTable = view.getTransactionsTable();
+        int selectedRow = transactionsTable.getSelectedRow();
+        List<Transaction> transactions = model.getTransactions();
+
+        //Nothing is selected
+        if (transactions.size() == 0) {
+          JOptionPane.showMessageDialog(view, "Please add a transaction first!");
+          view.toFront();
+        }
+        else if (selectedRow == -1) {
+          JOptionPane.showMessageDialog(view, "Please select a transaction to undo!");
+          view.toFront();
+        }
+        else if (selectedRow == transactionsTable.getRowCount()-1) {
+          JOptionPane.showMessageDialog(view, "Please select on a row that has transaction data!");
+          view.toFront();
+        }
+        else if (selectedRow != -1) {
+          controller.removeTransaction(transactionsTable.getSelectedRow());
+        }
+    }catch(IllegalArgumentException exception) {
+    JOptionPane.showMessageDialog(view,exception.getMessage());
+    view.toFront();
+    }});
     
 
   }
