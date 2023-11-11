@@ -1,4 +1,3 @@
-import javax.swing.JOptionPane;
 import controller.ExpenseTrackerController;
 import model.ExpenseTrackerModel;
 import view.ExpenseTrackerView;
@@ -75,38 +74,37 @@ public class ExpenseTrackerApp {
 
 
 
-
-
-
-
     // Add action listener to the "Undo Transaction" button
     view.addUndoTransactionListener(e -> {
-      try{
-        JTable transactionsTable = view.getTransactionsTable();
-        int selectedRow = transactionsTable.getSelectedRow();
-        List<Transaction> transactions = model.getTransactions();
+      JTable transactionsTable = view.getTransactionsTable();
+      int selectedRow = transactionsTable.getSelectedRow();
+      List<Transaction> transactions = model.getTransactions();
+      String message = "";
+      boolean removed = false;
 
-        //Nothing is selected
-        if (transactions.size() == 0) {
-          JOptionPane.showMessageDialog(view, "Please add a transaction first!");
-          view.toFront();
-        }
-        else if (selectedRow == -1) {
-          JOptionPane.showMessageDialog(view, "Please select a transaction to undo!");
-          view.toFront();
-        }
-        else if (selectedRow == transactionsTable.getRowCount()-1) {
-          JOptionPane.showMessageDialog(view, "Please select on a row that has transaction data!");
-          view.toFront();
-        }
-        else if (selectedRow != -1) {
-          controller.removeTransaction(transactionsTable.getSelectedRow());
-        }
-    }catch(IllegalArgumentException exception) {
-    JOptionPane.showMessageDialog(view,exception.getMessage());
-    view.toFront();
-    }});
-    
+      if (transactions.size() == 0) {
+        message = "Please add a transaction first!";
+        JOptionPane.showMessageDialog(view, message);
+        view.toFront();
+      }
+      else if (selectedRow == -1) {
+        message = "Please select a transaction to undo!";
+        JOptionPane.showMessageDialog(view, message);
+        view.toFront();
+      }
+      else if (selectedRow == transactionsTable.getRowCount()-1) {
+        message = "Please select on a row that has transaction data!";
+        JOptionPane.showMessageDialog(view, message);
+        view.toFront();
+      }
+      else if (selectedRow != -1) {
+        controller.removeTransaction(transactionsTable.getSelectedRow());
+        removed = true;
+      }
 
+      if (!removed){
+	      throw new IllegalArgumentException(message);
+      }
+    });
   }
 }
