@@ -77,33 +77,10 @@ public class ExpenseTrackerApp {
     // Add action listener to the "Undo Transaction" button
     view.addUndoTransactionListener(e -> {
       JTable transactionsTable = view.getTransactionsTable();
-      int selectedRow = transactionsTable.getSelectedRow();
-      List<Transaction> transactions = model.getTransactions();
-      String message = "";
-      boolean removed = false;
-
-      if (transactions.size() == 0) {
-        message = "Please add a transaction first!";
-        JOptionPane.showMessageDialog(view, message);
-        view.toFront();
-      }
-      else if (selectedRow == -1) {
-        message = "Please select a transaction to undo!";
-        JOptionPane.showMessageDialog(view, message);
-        view.toFront();
-      }
-      else if (selectedRow == transactionsTable.getRowCount()-1) {
-        message = "Please select on a row that has transaction data!";
-        JOptionPane.showMessageDialog(view, message);
-        view.toFront();
-      }
-      else if (selectedRow != -1) {
-        controller.removeTransaction(transactionsTable.getSelectedRow());
-        removed = true;
-      }
-
-      if (!removed){
-	      throw new IllegalArgumentException(message);
+      String removedMessage = "";
+      removedMessage = controller.removeTransaction(transactionsTable.getSelectedRow(), transactionsTable);
+      if (!removedMessage.equals("")){
+	      throw new IllegalArgumentException(removedMessage);
       }
     });
   }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import model.ExpenseTrackerModel;
 import model.Transaction;
@@ -52,13 +53,32 @@ public class ExpenseTrackerController {
     return true;
   }
 
-  public boolean removeTransaction(int selectedTransactionIndex) {
+  public String removeTransaction(int selectedTransactionIndex, JTable transactionsTable) {
+    String message = "";
     List<Transaction> transactions = model.getTransactions();
+    if (transactions.size() == 0) {
+      message = "Please add a transaction first!";
+      JOptionPane.showMessageDialog(view, message);
+      view.toFront();
+      return message;
+    }
+    else if (selectedTransactionIndex == -1) {
+      message = "Please select a transaction to undo!";
+      JOptionPane.showMessageDialog(view, message);
+      view.toFront();
+      return message;
+    }
+    else if (selectedTransactionIndex == transactionsTable.getRowCount()-1) {
+      message = "Please select on a row that has transaction data!";
+      JOptionPane.showMessageDialog(view, message);
+      view.toFront();
+      return message;
+    }
     Transaction selectedTransaction = transactions.get(selectedTransactionIndex);
     model.removeTransaction(selectedTransaction);
     view.getTableModel().removeRow(selectedTransactionIndex);
     refresh();
-    return true;
+    return "";
   }
 
   public void applyFilter() {
