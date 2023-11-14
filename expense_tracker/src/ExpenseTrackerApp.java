@@ -80,6 +80,8 @@ public class ExpenseTrackerApp {
       String removedMessage = "";
       removedMessage = controller.removeTransaction(transactionsTable.getSelectedRow(), transactionsTable);
       if (!removedMessage.equals("")){
+        JOptionPane.showMessageDialog(view, removedMessage);
+        view.toFront();
 	      throw new IllegalArgumentException(removedMessage);
       }
     });

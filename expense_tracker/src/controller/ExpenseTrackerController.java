@@ -54,25 +54,15 @@ public class ExpenseTrackerController {
   }
 
   public String removeTransaction(int selectedTransactionIndex, JTable transactionsTable) {
-    String message = "";
     List<Transaction> transactions = model.getTransactions();
     if (transactions.size() == 0) {
-      message = "Please add a transaction first!";
-      JOptionPane.showMessageDialog(view, message);
-      view.toFront();
-      return message;
+      return "Please add a transaction first!";
     }
     else if (selectedTransactionIndex == -1) {
-      message = "Please select a transaction to undo!";
-      JOptionPane.showMessageDialog(view, message);
-      view.toFront();
-      return message;
+      return "Please select a transaction to undo!";
     }
     else if (selectedTransactionIndex == transactionsTable.getRowCount()-1) {
-      message = "Please select on a row that has transaction data!";
-      JOptionPane.showMessageDialog(view, message);
-      view.toFront();
-      return message;
+      return "Please select on a row that has transaction data!";
     }
     Transaction selectedTransaction = transactions.get(selectedTransactionIndex);
     model.removeTransaction(selectedTransaction);
